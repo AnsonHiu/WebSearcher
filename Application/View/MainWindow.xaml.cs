@@ -8,9 +8,7 @@ using System.ComponentModel;
 using System.Windows;
 
 namespace Application;
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
+
 public partial class MainWindow: Window, INotifyPropertyChanged
 {
     private readonly IMediator _mediator;
@@ -45,24 +43,22 @@ public partial class MainWindow: Window, INotifyPropertyChanged
         DataContext = this;
     }
 
-    // TODO: Test Dto mapping
-    // TODO: max count returns more than max count
     // TODO: Unit Tests
+    // TODO: Google region set to AU
     // TODO: Check out ViewModel
     // TODO: Check out command for event handling
-    // TODO: Google region set to AU
-    // TODO: Consider adding cancel button (cancellationi token)
     // TODO: Loading screen
+    // TODO: Consider adding cancel button (cancellation token)
     // Register: Setup AWS Secrets Manager for sensitive config data
     private async void SearchForKeywords(object sender, RoutedEventArgs e)
     {
         ErrorMessage = string.Empty;
         try
         {
-            var query = new KeywordSearchQuery(Keyword, 1);
+            var query = new KeywordSearchQuery(Keyword, 25);
             var searchResults = await _mediator.Send(query, CancellationToken.None);
             var filteredResults = KeywordsFilter.GetMatchedUrl(MatchingUrl, searchResults);
-            var mappedFilteredResults = _mapper.Map<IEnumerable<UrlLocation>>(filteredResults);
+            var mappedFilteredResults = _mapper.Map<IEnumerable<UrlLocation>>(filteredResults.ToList());
             if(SearchResults.Count > 0)
             {
                 SearchResults.Clear();

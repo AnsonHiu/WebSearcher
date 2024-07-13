@@ -9,14 +9,20 @@ using Microsoft.Extensions.Options;
 using System.Net;
 
 namespace Data.Services;
+
+/// <summary>
+/// Query Service using Google Custom Search API
+/// </summary>
 public class GoogleSearchService(ILogger<GoogleSearchService> logger, IOptions<GoogleCustomSearchApiOptions> options) : ISearchService
 {
     private readonly ILogger<GoogleSearchService> _logger = logger;
     private readonly GoogleCustomSearchApiOptions _googleSearchConfig = options.Value;
+    // Currently max page size allowed by Google Custom Search Api is 10
+    private const int DefaultPageSize = 10;
 
-    public async Task<IEnumerable<Result>> Search(string searchTerms, int maxPagesQueried, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Result>> Search(string searchTerms, int returnCount, CancellationToken cancellationToken)
     {
-        IList<Result> results = [];
+        IList<Result> searchResults = [];
         try
         {
             var service = new CustomSearchAPIService(new BaseClientService.Initializer
@@ -28,20 +34,22 @@ public class GoogleSearchService(ILogger<GoogleSearchService> logger, IOptions<G
             request.Cx = _googleSearchConfig.SearchEngineId;
             request.Q = searchTerms;
 
-            IList<Result> paging = [];
-            var count = 0;
-            while (paging != null && count * 10 < maxPagesQueried)
+            var pageCount = 0;
+            while (pageCount * DefaultPageSize < returnCount)
             {
-                request.Start = count * 10 + 1;
+                var currentItemsCount = pageCount * DefaultPageSize;
+                request.Start = currentItemsCount + 1;
+                request.Num = IsRemainingItemsMoreThanDefaultPageSize(currentItemsCount, returnCount, out var remainingItemCount)
+                    ? DefaultPageSize
+                    : remainingItemCount;
                 var search = await request.ExecuteAsync(cancellationToken);
-                paging = search.Items;
-                if (paging != null)
+                if (search.Items != null)
                 {
-                    results = [.. results, .. paging];
+                    searchResults = [.. searchResults, .. search.Items];
                 }
-                count++;
+                pageCount++;
             }
-            return results;
+            return searchResults;
         }
         catch (GoogleApiException ex)
         {
@@ -51,9 +59,20 @@ public class GoogleSearchService(ILogger<GoogleSearchService> logger, IOptions<G
             }
             else
             {
-                _logger.LogError(ex, "Google search failed after retrieving [{resultsCount}] sites", results.Count);
+                _logger.LogError(ex, "Google search failed after retrieving [{resultsCount}] sites.", searchResults.Count);
             }
             throw;
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An unexpected error has occurred while querying with Google.");
+            throw;
+        }
+    }
+
+    private static bool IsRemainingItemsMoreThanDefaultPageSize(int currentItemsCount, int returnCount, out int remainingItemCount)
+    {
+        remainingItemCount = returnCount - currentItemsCount;
+        return remainingItemCount >= DefaultPageSize;
     }
 }

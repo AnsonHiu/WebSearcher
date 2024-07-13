@@ -1,5 +1,8 @@
 ﻿namespace Data.Options;
 
+/// <summary>
+/// Google API connection details
+/// </summary>
 public class GoogleCustomSearchApiOptions
 {
     // TODO: Handle empty options

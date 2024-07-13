@@ -15,10 +15,10 @@ public class KeywordsFilter
         var searchResultsEnumerator = searchQueryResults.GetEnumerator();
         while (searchResultsEnumerator.MoveNext())
         {
-            //if (searchResultsEnumerator.Current.BaseUrl.Equals(urlToMatch, StringComparison.OrdinalIgnoreCase))
-            //{
+            if (searchResultsEnumerator.Current.BaseUrl.Equals(urlToMatch, StringComparison.OrdinalIgnoreCase))
+            {
                 matchedResults.Add(new(searchResultsEnumerator.Current.FullUrl, count));
-            //}
+            }
             count++;
         }
         return matchedResults;
