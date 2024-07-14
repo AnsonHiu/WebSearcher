@@ -18,6 +18,20 @@ public static class DependencyInjection
         services.AddScoped<IGoogleApiFactory, GoogleApiFactory>();
         services.AddScoped<ISearchService, GoogleSearchService>();
         services.AddScoped<IGoogleApiService, GoogleApiService>();
+        services
+            .AddOptionsWithValidateOnStart<GoogleCustomSearchApiOptions>()
+            //.AddOptions<GoogleCustomSearchApiOptions>()
+            .Bind(configuration.GetSection(GoogleCustomSearchApiOptions.GoogleCustomSearchApi))
+            .ValidateDataAnnotations()
+            .Validate(googleConfig =>
+            {
+                if(string.IsNullOrWhiteSpace(googleConfig.SearchEngineId)
+                || string.IsNullOrWhiteSpace(googleConfig.ApiKey))
+                {
+                    throw new ArgumentNullException("Necessary Google Api config is missing.");
+                }
+                return true;
+            });
         services.Configure<GoogleCustomSearchApiOptions>(configuration.GetSection(GoogleCustomSearchApiOptions.GoogleCustomSearchApi));
         services.ConfigureValidation();
         return services;

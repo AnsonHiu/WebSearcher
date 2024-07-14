@@ -1,14 +1,20 @@
-﻿namespace Data.Options;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Data.Options;
 
 /// <summary>
 /// Google API connection details
 /// </summary>
-public class GoogleCustomSearchApiOptions
+public sealed class GoogleCustomSearchApiOptions
 {
-    // TODO: Handle empty options
     public const string GoogleCustomSearchApi = "GoogleCustomSearchApi";
-    public string SearchEngineId { get; set; } = String.Empty;
-    public string ApiKey { get; set; } = string.Empty;
+
+    [Required]
+    public required string SearchEngineId { get; set; }
+
+    [Required]
+    public required string ApiKey { get; set; }
+
     public string ApplicationName { get; set; } = string.Empty;
     public string SearchCountry { get; set; } = string.Empty;
 }
