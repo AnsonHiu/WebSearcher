@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using Domain.Entities;
-
-namespace Application.Models;
+﻿namespace Application.Models;
 
 public record UrlLocation
 (

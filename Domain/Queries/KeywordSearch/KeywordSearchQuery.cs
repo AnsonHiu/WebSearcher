@@ -3,6 +3,6 @@
 namespace Domain.Queries.SearchQuery;
 public record KeywordSearchQuery
 (
-    string Keyword,
+    string Keywords,
     int MaxCount = 100
 ) : IRequest<IEnumerable<KeywordSearchQueryResult>>;

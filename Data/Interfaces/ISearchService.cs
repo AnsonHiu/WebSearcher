@@ -3,6 +3,6 @@
 namespace Data.Interfaces;
 public interface ISearchService
 {
-    public Task<IEnumerable<Result>> Search(string searchTerms, int maxReturnResultsCount, CancellationToken cancellationToken);
+    Task<IEnumerable<Result>> Search(SearchParams searchParams, CancellationToken cancellationToken);
 }
 

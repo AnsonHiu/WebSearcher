@@ -4,13 +4,14 @@ using Domain.Queries.SearchQuery;
 namespace Domain.Services;
 public class KeywordsFilter
 {
-    public static IEnumerable<MatchedUrlLocation> GetMatchedUrl(string urlToMatch, IEnumerable<KeywordSearchQueryResult> searchQueryResults)
+    public static IEnumerable<UrlLocation> FilterSearchResultsByUrl(string? urlToMatch, IEnumerable<KeywordSearchQueryResult> searchQueryResults)
     {
+        // TODO: implement deferred execution to chain return results
         if(string.IsNullOrWhiteSpace(urlToMatch))
         {
-            return searchQueryResults.Select((searchResult, index) => new MatchedUrlLocation(searchResult.FullUrl, index));
+            return searchQueryResults.Select((searchResult, index) => new UrlLocation(searchResult.FullUrl, index));
         }
-        var matchedResults = new List<MatchedUrlLocation>();
+        var matchedResults = new List<UrlLocation>();
         var count = 0;
         var searchResultsEnumerator = searchQueryResults.GetEnumerator();
         while (searchResultsEnumerator.MoveNext())

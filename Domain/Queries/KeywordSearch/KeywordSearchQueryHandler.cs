@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.Interfaces;
 using FluentValidation;
 using MediatR;
@@ -17,7 +18,7 @@ public class KeywordSearchQueryHandler(
     public async Task<IEnumerable<KeywordSearchQueryResult>> Handle(KeywordSearchQuery query, CancellationToken cancellationToken)
     {
         _validator.ValidateAndThrow(query);
-        var results = await _searchService.Search(query.Keyword, query.MaxCount, cancellationToken);
+        var results = await _searchService.Search(_mapper.Map<SearchParams>(query), cancellationToken);
         return _mapper.Map<IEnumerable<KeywordSearchQueryResult>>(results);
     }
 }

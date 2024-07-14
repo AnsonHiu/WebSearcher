@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Application.Common.Extensions;
+using Data;
 using Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,26 +16,18 @@ public partial class App : System.Windows.Application
 
     public App()
     {
-        //TODO: Error Handling for missing parent directory
         string? projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName;
         var builder = new ConfigurationBuilder()
             .SetBasePath(projectDirectory ?? Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            .AddJsonFile();
         _configuration = builder.Build();
+
         var serviceCollection = new ServiceCollection();
-        AddApplicationServices(serviceCollection);
+        serviceCollection.AddApplicationServices();
         serviceCollection.AddDataServices(_configuration);
         serviceCollection.AddDomainServices(_configuration);
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
-    }
-
-    /// <summary>
-    /// Handles dependency injection in the application layer
-    /// </summary>
-    private void AddApplicationServices(IServiceCollection services)
-    {
-        services.AddSingleton<MainWindow>();
     }
 
     /// <summary>

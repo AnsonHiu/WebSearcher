@@ -1,6 +1,6 @@
 ﻿using Data.Interfaces;
 using Data.Options;
-using Data.Services;
+using Data.Services.Google;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +13,9 @@ public static class DependencyInjection
     /// </summary>
     public static IServiceCollection AddDataServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<IGoogleApiFactory, GoogleApiFactory>();
         services.AddScoped<ISearchService, GoogleSearchService>();
+        services.AddScoped<IGoogleApiService, GoogleApiService>();
         services.Configure<GoogleCustomSearchApiOptions>(configuration.GetSection(GoogleCustomSearchApiOptions.GoogleCustomSearchApi));
         return services;
     }

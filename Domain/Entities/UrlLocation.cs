@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public record MatchedUrlLocation
+public record UrlLocation
 (
     string FullUrl,
     int Location

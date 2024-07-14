@@ -1,4 +1,4 @@
-namespace Data.UnitTests;
+namespace Domain.UnitTests;
 
 public class UnitTest1
 {

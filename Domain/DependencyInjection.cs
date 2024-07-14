@@ -4,6 +4,8 @@ using NLog.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using FluentValidation;
 using Domain.Queries.SearchQuery;
+using Domain.Interfaces;
+using Domain.Services;
 
 namespace Domain;
 
@@ -14,6 +16,7 @@ public static  class DependencyInjection
     /// </summary>
     public static void AddDomainServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddTransient<ISearchAndFilterService, KeywordSearchAndFilterService>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddMediatR(cfg =>
         {
