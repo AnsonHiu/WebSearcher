@@ -44,7 +44,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
         NotifyPropertyChanged(nameof(BtnSearchButtonText));
         try
         {
-            await Task.Delay(1000);
             var results = await _searchAndFilterService.SearchAndFilter(TxtKeyword, TxtMatchingUrl, CancellationToken.None);
             var mappedResults = _mapper.Map<IEnumerable<UrlLocation>>(results);
             SearchResults = new(mappedResults);
