@@ -6,7 +6,6 @@ public class KeywordSearchQueryValidator : AbstractValidator<KeywordSearchQuery>
 {
     public KeywordSearchQueryValidator()
     {
-        RuleFor(q => q.MaxCount).InclusiveBetween(1, 100);
         RuleFor(q => q.Keywords).NotEmpty();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Data.Interfaces;
+using Data.Models;
 using Data.Options;
 using Data.Services.Google;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +19,12 @@ public static class DependencyInjection
         services.AddScoped<ISearchService, GoogleSearchService>();
         services.AddScoped<IGoogleApiService, GoogleApiService>();
         services.Configure<GoogleCustomSearchApiOptions>(configuration.GetSection(GoogleCustomSearchApiOptions.GoogleCustomSearchApi));
+        services.ConfigureValidation();
         return services;
+    }
+
+    private static void ConfigureValidation(this IServiceCollection services)
+    {
+        services.AddScoped<IValidator<SearchParams>, SearchParamsValidator>();
     }
 }

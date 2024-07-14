@@ -9,6 +9,11 @@ using System.ComponentModel;
 
 namespace Data.Services.Google;
 
+/// <summary>
+/// Facade for Google Apis
+/// </summary>
+/// <param name="options">Config settings used for google apis</param>
+/// <param name="googleApiFactory">Factory that creates google api services</param>
 public class GoogleApiService(IOptions<GoogleCustomSearchApiOptions> options, IGoogleApiFactory googleApiFactory) : IGoogleApiService, IDisposable
 {
     private readonly GoogleCustomSearchApiOptions _googleSearchConfig = options.Value;
@@ -28,6 +33,7 @@ public class GoogleApiService(IOptions<GoogleCustomSearchApiOptions> options, IG
         listRequest.Start = request.Skip;
         listRequest.Num = request.FetchCount;
 
+        // GetDescription can be expensive, if performance is affected consider using FlyWeight pattern
         if (Enum.TryParse(_googleSearchConfig.SearchCountry, out GlCountry searchRegion)
             && searchRegion.GetDescription() is string description
             && description is not null)

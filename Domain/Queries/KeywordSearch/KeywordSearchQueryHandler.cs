@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Data;
 using Data.Interfaces;
+using Data.Models;
 using FluentValidation;
 using MediatR;
 

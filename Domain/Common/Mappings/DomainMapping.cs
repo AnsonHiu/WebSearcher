@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Data;
+using Data.Models;
 using Domain.Queries.SearchQuery;
 using Google.Apis.CustomSearchAPI.v1.Data;
 

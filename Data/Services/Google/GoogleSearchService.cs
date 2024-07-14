@@ -8,18 +8,15 @@ using System.Net;
 namespace Data.Services.Google;
 
 /// <summary>
-/// Query Service facade using Google Custom Search API
+/// Query Service using Google Custom Search API
 /// </summary>
-public class GoogleSearchService(
-    ILogger<GoogleSearchService> logger,
-    IGoogleApiService googleSearchService
-) : ISearchService
+public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApiService googleSearchService) : ISearchService
 {
     private readonly ILogger<GoogleSearchService> _logger = logger;
     private readonly IGoogleApiService _googleSearchService = googleSearchService;
 
     // Currently max page size allowed by Google Custom Search Api is 10
-    private const int DefaultPageSize = 10;
+    public const int DefaultPageSize = 10;
 
     /// <summary>
     /// Use this method to programatically query google
