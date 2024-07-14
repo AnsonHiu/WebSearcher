@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 public static class DependencyInjection
@@ -9,5 +10,6 @@ public static class DependencyInjection
     public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddSingleton<MainWindow>();
+        services.AddScoped<MainWindowViewModel>();
     }
 }

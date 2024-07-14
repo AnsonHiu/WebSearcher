@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodel="clr-namespace:Application.ViewModel"
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow"
         SizeToContent="WidthAndHeight"
         MinHeight="250" MinWidth="650">
-    <Grid DataContext="{Binding}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -26,9 +28,9 @@
         </Grid.ColumnDefinitions>
         <Label Content="Keyword:" Margin="20,20,10,10" VerticalAlignment="Top" Height="23"/>
         <Label Content="Url To Match:" Margin="20,10,10,10" Grid.Row="1" VerticalAlignment="Top" Height="23"/>
-        <TextBox Text="{Binding Keyword}" Grid.Column="1" Margin="10,20,20,10" TextWrapping="Wrap" Grid.ColumnSpan="2"/>
-        <TextBox Text="{Binding MatchingUrl}" Grid.Column="1" Margin="10,10,20,10" Grid.Row="1" TextWrapping="Wrap" Grid.ColumnSpan="2"/>
-        <Button Grid.Column="0" Content="{Binding SearchButtonText}" Margin="10,10,6,20" Grid.Row="2" Width="100" Height="23" Grid.ColumnSpan="3" Click="SearchForKeywords" />
+        <TextBox Text="{Binding TxtKeyword}" Grid.Column="1" Margin="10,20,20,10" TextWrapping="Wrap" Grid.ColumnSpan="2"/>
+        <TextBox Text="{Binding TxtMatchingUrl}" Grid.Column="1" Margin="10,10,20,10" Grid.Row="1" TextWrapping="Wrap" Grid.ColumnSpan="2"/>
+        <Button Grid.Column="0" Content="{Binding BtnSearchButtonText}" Command="{Binding SearchCommand}" Margin="10,10,6,20" Grid.Row="2" Width="100" Height="23" Grid.ColumnSpan="3" />
         <ListView ItemsSource="{Binding SearchResults}" Grid.Column="3" Grid.RowSpan="5" Grid.ColumnSpan="4">
             <ListView.View>
                 <GridView AllowsColumnReorder="True">
@@ -37,6 +39,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBlock x:Name="ErrorMessageTb" Text="{Binding ErrorMessage}" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="3" TextAlignment="Center" Foreground="#FFCA2121" />
+        <TextBlock x:Name="ErrorMessageTb" Text="{Binding TbErrorMessage}" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="3" TextAlignment="Center" Foreground="#FFCA2121" />
     </Grid>
 </Window>
