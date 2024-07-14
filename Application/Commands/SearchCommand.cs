@@ -1,5 +1,4 @@
-﻿using Application.ViewModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace Application.Commands;
 

@@ -1,5 +1,4 @@
-﻿using Data.Models.SearchParams;
-using Domain.Queries.SearchQuery;
+﻿using Domain.Queries.SearchQuery;
 using FluentValidation.TestHelper;
 
 namespace Domain.UnitTests.Queries.KeywordSearch;
