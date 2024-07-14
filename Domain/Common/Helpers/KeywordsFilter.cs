@@ -1,13 +1,17 @@
 ﻿using Domain.Entities;
 using Domain.Queries.SearchQuery;
 
-namespace Domain.Services;
+namespace Domain.Common.Helpers;
+
 public class KeywordsFilter
 {
+    /// <summary>
+    /// Filter that leaves only items with a matching base url
+    /// </summary>
     public static IEnumerable<UrlLocation> FilterSearchResultsByUrl(string? urlToMatch, IEnumerable<KeywordSearchQueryResult> searchQueryResults)
     {
         // TODO: implement deferred execution to chain return results
-        if(string.IsNullOrWhiteSpace(urlToMatch))
+        if (string.IsNullOrWhiteSpace(urlToMatch))
         {
             return searchQueryResults.Select((searchResult, index) => new UrlLocation(searchResult.FullUrl, index));
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Data.Interfaces;
-using Data.Models;
+using Data.Models.SearchParams;
 using FluentValidation;
 using MediatR;
 

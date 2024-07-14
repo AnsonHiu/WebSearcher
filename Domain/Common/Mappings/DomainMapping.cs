@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using Data.Models;
+using Data.Models.SearchParams;
 using Domain.Queries.SearchQuery;
 using Google.Apis.CustomSearchAPI.v1.Data;
 
 namespace Domain.Common.Mappings;
+
 public class DomainMapping : Profile
 {
     /// <summary>

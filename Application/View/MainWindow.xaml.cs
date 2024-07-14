@@ -48,19 +48,19 @@ public partial class MainWindow: Window, INotifyPropertyChanged
         DataContext = this;
     }
 
-    // TODO: Unit Tests
-    // TODO: remove Query count to default
-    // TODO: Error Handling for missing parent directory
+
     // TODO: Check out ViewModel
     // TODO: Check out command for event handling, should disable search button while searching
-    // TODO: Bind Enter key to search
-    // TODO: Loading screen
-    // TODO: Consider adding cancel button (cancellation token)
 
     // Register:
     // Setup AWS Secrets Manager for sensitive config data,
     // Consider using State pattern for search button, but could be over engineered
     // Search button can use a spinning logo while loading
+
+    // Improvements:
+    // adding cancel button (cancellation token)
+    // loading icon on search
+    // bind Enter key to search
 
     private async void SearchForKeywords(object sender, RoutedEventArgs e)
     {

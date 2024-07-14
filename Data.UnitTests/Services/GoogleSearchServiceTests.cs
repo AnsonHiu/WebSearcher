@@ -1,11 +1,12 @@
 ﻿using Data.Interfaces;
 using Data.Models;
+using Data.Models.SearchParams;
 using Data.Services.Google;
 using FluentAssertions;
+using FluentValidation;
 using Google;
 using Microsoft.Extensions.Logging;
 using Moq;
-
 using Search = Google.Apis.CustomSearchAPI.v1.Data.Search;
 
 namespace Data.UnitTests.Services;
@@ -20,7 +21,8 @@ public class GoogleSearchServiceTests
     {
         _loggerMock = new Mock<ILogger<GoogleSearchService>>();
         _googleApiServiceMock = new Mock<IGoogleApiService>();
-        _googleSearchService = new(_loggerMock.Object, _googleApiServiceMock.Object);
+        var validator = new SearchParamsValidator();
+        _googleSearchService = new(_loggerMock.Object, _googleApiServiceMock.Object, validator);
     }
 
     [Theory]
@@ -49,6 +51,19 @@ public class GoogleSearchServiceTests
     }
 
     [Fact]
+    public async Task GivenInvalidSearchParams_WhenQueryApi_ThrowsException()
+    {
+        // Arrange
+        var searchParams = new SearchParams("some keyword", 101);
+
+        // Act
+        Func<Task> searchAction = () => _googleSearchService.Search(searchParams, CancellationToken.None);
+
+        // Assert
+        await searchAction.Should().ThrowAsync<ValidationException>();
+    }
+
+    [Fact]
     public async Task GivenSearchParams_IfGoogleApiThrowsError_LogsError()
     {
         // Arrange
@@ -66,7 +81,7 @@ public class GoogleSearchServiceTests
             It.Is<EventId>(eventId => eventId.Id == 0),
             It.Is<It.IsAnyType>((@object, @type) => true),
             It.IsAny<Exception>(),
-            It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
         Times.Once);
 
     }

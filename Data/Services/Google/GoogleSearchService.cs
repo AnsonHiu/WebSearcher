@@ -1,5 +1,7 @@
 ﻿using Data.Interfaces;
 using Data.Models;
+using Data.Models.SearchParams;
+using FluentValidation;
 using Google;
 using Google.Apis.CustomSearchAPI.v1.Data;
 using Microsoft.Extensions.Logging;
@@ -10,10 +12,11 @@ namespace Data.Services.Google;
 /// <summary>
 /// Query Service using Google Custom Search API
 /// </summary>
-public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApiService googleSearchService) : ISearchService
+public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApiService googleApiService, IValidator<SearchParams> searchParamsValidator) : ISearchService
 {
     private readonly ILogger<GoogleSearchService> _logger = logger;
-    private readonly IGoogleApiService _googleSearchService = googleSearchService;
+    private readonly IGoogleApiService _googleApiService = googleApiService;
+    private readonly IValidator<SearchParams> _validator = searchParamsValidator;
 
     // Currently max page size allowed by Google Custom Search Api is 10
     public const int DefaultPageSize = 10;
@@ -26,6 +29,7 @@ public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApi
         List<Result> searchResults = [];
         try
         {
+            _validator.ValidateAndThrow(searchParams);
             var pageCount = 0;
             while (pageCount * DefaultPageSize < searchParams.ReturnCount)
             {
@@ -37,7 +41,7 @@ public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApi
 
                 var googleSearchRequest = new GoogleSearchRequest(searchParams.Keywords, firstItemIndex, fetchCount);
 
-                var search = await _googleSearchService.ExecuteSearchAsync(googleSearchRequest, cancellationToken);
+                var search = await _googleApiService.ExecuteSearchAsync(googleSearchRequest, cancellationToken);
                 if (search.Items is not null)
                 {
                     searchResults = [.. searchResults, .. search.Items];
@@ -45,6 +49,10 @@ public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApi
                 pageCount++;
             }
             return searchResults;
+        }
+        catch (ValidationException)
+        {
+            throw;
         }
         catch (GoogleApiException ex)
         {
@@ -65,7 +73,7 @@ public class GoogleSearchService(ILogger<GoogleSearchService> logger, IGoogleApi
         }
         finally
         {
-            _googleSearchService.Dispose();
+            _googleApiService.Dispose();
         }
     }
 

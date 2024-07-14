@@ -1,5 +1,5 @@
 ﻿using Data.Interfaces;
-using Data.Models;
+using Data.Models.SearchParams;
 using Data.Options;
 using Data.Services.Google;
 using FluentValidation;

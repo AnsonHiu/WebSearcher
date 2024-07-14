@@ -7,7 +7,7 @@ namespace Application.Common.Mappings;
 /// <summary>
 /// Maps between Domain Models and Application Models
 /// </summary>
-class ApplicationMapping : Profile
+public class ApplicationMapping : Profile
 {
     public ApplicationMapping()
     {

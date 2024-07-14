@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Common.Helpers;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Queries.SearchQuery;
 using MediatR;
@@ -16,7 +17,7 @@ public class KeywordSearchAndFilterService(IMediator mediator) : ISearchAndFilte
     /// <param name="urlToMatch">Results will be filtered with url. Returns all results if null or empty</param>
     public async Task<IEnumerable<UrlLocation>> SearchAndFilter(string keyword, string? urlToMatch, CancellationToken cancellationToken)
     {
-        var query = new KeywordSearchQuery(keyword, 11);
+        var query = new KeywordSearchQuery(keyword);
         var keywordSearchResults = await _mediator.Send(query, cancellationToken);
         return KeywordsFilter.FilterSearchResultsByUrl(urlToMatch, keywordSearchResults);
     }
