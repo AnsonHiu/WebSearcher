@@ -6,13 +6,15 @@ An application with 2 supporting project libraries to query the internet that re
 > - Updating the query property under Domain.Services.KeywordSearchAndFilterService.cs to   take in a max count can limit the number of queries sent per search (default is 100)
 > [KeywordSearchAndFilterService](Domain/Services/KeywordSearchAndFilterService.cs)
 
+
 ## Logging
-Log file location can be found under {ProjectDirectory}/App_Data/Logs
+Log file location can be found under `{ProjectDirectory}/App_Data/Logs`
+
 
 ## Project Structure
 Project structure loosely follows clean architecture with MVVM
-https://medium.com/@ajliberatore/android-clean-architecture-mvvm-4df18933fa9
-https://github.com/jasontaylordev/CleanArchitecture
+- https://medium.com/@ajliberatore/android-clean-architecture-mvvm-4df18933fa9
+- https://github.com/jasontaylordev/CleanArchitecture
 
 The project dependencies flow downwards, connected by interfaces.
 Each project also manages their own dependencies, which are all ultimately called in Application Startup.
@@ -22,8 +24,8 @@ The Application project implements the MVVM model and deals with UI logic
 
 ### Domain
 The Domain project contains use cases used by the application project (business logic)
-    - the services under domain creates separation between business logic and actions (CQRS). 
-    - This makes the actions (CQRS layer) reusable by different business logic.
+- the services under domain creates separation between business logic and actions (CQRS). 
+- This makes the actions (CQRS layer) reusable by different business logic.
 
 ### Data
 The Data project deals with retrieving data (usually from the database, or calling external sources to return data used for calculation)
