@@ -20,7 +20,6 @@ public static class DependencyInjection
         services.AddScoped<IGoogleApiService, GoogleApiService>();
         services
             .AddOptionsWithValidateOnStart<GoogleCustomSearchApiOptions>()
-            //.AddOptions<GoogleCustomSearchApiOptions>()
             .Bind(configuration.GetSection(GoogleCustomSearchApiOptions.GoogleCustomSearchApi))
             .ValidateDataAnnotations()
             .Validate(googleConfig =>
