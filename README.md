@@ -3,7 +3,8 @@ An application with 2 supporting project libraries to query the internet that re
 
 > [!WARNING]
 > - If using Google's custom search Api note that the api has a limit of 10,000 queries per day. Once reached a "Too Many Requests" error will return.
-> - Update the query property under [KeywordSearchAndFilterService](Domain/Services/KeywordSearchAndFilterService.cs), e.g. `var query = new KeywordSearchQuery(keyword, 5)` to take in a max count can limit the number of queries sent per search (default is 100)
+> - Update the query property under [KeywordSearchAndFilterService](Domain/Services/KeywordSearchAndFilterService.cs) to take in a max count can limit the number of queries sent per search (default is 100)
+   - e.g. `var query = new KeywordSearchQuery(keyword, 5);`
 
 
 ## Logging
@@ -30,7 +31,7 @@ The Domain project contains use cases used by the application project (business 
 The Data project deals with retrieving data (usually from the database, or calling external sources to return data used for calculation)
 
 ## Outstanding issues
-- [ ] Setup AWS Secrets Manager for sensitive config data,
+- [ ] Setup AWS Secrets Manager for sensitive config data
 
 ## Possible Improvements
  - [ ] Implement GoogleApiFactory to return a singleton ApiService instance
